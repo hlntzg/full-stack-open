@@ -5,7 +5,7 @@ The following exercise represents the situation where the user creates a new not
 1. User action (writing note + clicking save).
 2. POST request with form data.
 3. Server response with redirect (`302` → `/exampleapp/notes`).
-4. Browser reload of /notes, fetching HTML, CSS, JS again.
+4. Browser reload of `/exampleapp/notes`, fetching HTML, CSS, JS again.
 5. JavaScript execution → fetches updated JSON.
 6. Notes rendered again, now including the new note.
 
