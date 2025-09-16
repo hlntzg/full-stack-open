@@ -1,39 +1,44 @@
 import { useState } from "react"
 
-const Footer = () => {
+const Display = ({ counter }) => {
   return (
-    <div>
-      Greeting app created by <a href='https://github.com/hlntzg'>hlntzg</a> ♡
-    </div>
+    <div>{counter}</div>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button onClick={props.onClick}>
+      {props.text}
+    </button>
   )
 }
 
 const App = () => {
   const [ counter, setCounter] = useState(0)
 
-  // The function passed as the first parameter to the setTimeout 
-  // function is invoked one second after calling the setTimeout function
-  // setTimeout(
-  //   () => setCounter(counter + 1), 
-  //   1000
-  // )
-
-  const handleClick = () => {
-    console.log('clicked')
-    setCounter(counter + 1)
-  }
-  // console.log('rendering...', counter)
+  // handle increase
+  const increaseByOne = () => setCounter(counter + 1)
+  // handle descrease
+  const decreaseByOne = () => setCounter(counter - 1)
+  // handle reset to zero
+  const setToZero = () => setCounter(0)
 
   return (
     <div>
-      {counter}
-      <button onClick={handleClick}>
-        add
-      </button>
-      <button onClick={() => setCounter(0)}> 
-        reset
-      </button>
-      <Footer />
+      <Display counter={counter}/>
+      <Button
+        onClick={increaseByOne}
+        text='plus'
+      />
+      <Button
+        onClick={setToZero}
+        text='zero'
+      />     
+      <Button
+        onClick={decreaseByOne}
+        text='minus'
+      />
     </div>
   )
 }
