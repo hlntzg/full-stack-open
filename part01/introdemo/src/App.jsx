@@ -1,30 +1,4 @@
-// const Hello = ( props) => {
-const Hello = ({ name, age }) => {
-
-  // console.log(props)
-  console.log({ name, age })
-  
-  // full form:
-  // const name = props.name;
-  // const age = props.age;
-  // compact form (JavaScript):
-  // const { name, age } = props;
-
-  // const bornYear = () => new Date().getFullYear() - age // compact syntax form for arrow function
-  const bornYear = () => {
-    const yearNow = new  Date().getFullYear();
-    return (yearNow - age)
-  }
-
-  return (
-    <div>
-      <p>
-        Hello {name}, you are {age} years old
-      </p>
-      <p>So you were probably born in {bornYear()}</p>
-    </div>
-  )
-}
+import { useState } from "react"
 
 const Footer = () => {
   return (
@@ -35,18 +9,22 @@ const Footer = () => {
 }
 
 const App = () => {
-  const name = 'peter'
-  const age = 25
+  const [ counter, setCounter] = useState(1)
+
+  // The function passed as the first parameter to the setTimeout 
+  // function is invoked one second after calling the setTimeout function
+  setTimeout(
+    () => setCounter(counter + 1), 
+    1000
+  )
+
+  // console.log('rendering...', counter)
+
   return (
-    <>
-      <h1>Greetings</h1>
-      <Hello 
-        name='bob'
-        age={10}
-      />
-      <Hello name={name} age={age}/>
+    <div>
+      {counter}
       <Footer />
-    </>
+    </div>
   )
 }
 export default App
