@@ -6,6 +6,8 @@ const Button = (props) => (
   </button>
 )
 
+const Display = props => <div>{props.value}</div>
+
 const App = () => {
   const [value, setValue] = useState(10)
 
@@ -16,7 +18,7 @@ const App = () => {
 
   return (
     <div>
-      {value}
+      <Display value={value} />
       <Button 
         onClick={() => setToValue(1000)}
         text='thousand'
