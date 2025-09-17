@@ -37,6 +37,12 @@ const App = () => {
     setRight(updatedRight);
   }
 
+  const handleResetClick = () => {
+    setAll([])
+    setLeft(0)
+    setRight(0)
+  }
+
   return (
     <div>
       {left}
@@ -50,6 +56,7 @@ const App = () => {
       />
       {right}
       <History allClicks={allClicks} />
+      <button onClick={handleResetClick}>Reset</button>
     </div>
   )
 }
