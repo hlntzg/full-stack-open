@@ -18,7 +18,6 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
-
   return (
     <div>
       {props.parts.map(part => (
@@ -35,7 +34,6 @@ const Part = (props) => (
 )
 
 const Total = (props) => {
-  console.log(props)
   const total = props.parts.reduce((sum, part) => sum + part.exercises, 0)
 
   return (
@@ -44,7 +42,6 @@ const Total = (props) => {
     </div>
   )
 }
-
 
 const App = () => {
   const courses = [
@@ -92,10 +89,16 @@ const App = () => {
     }
   ]
 
+  // console.log(courses)
   return (
     <div>
       <h1>Web development curriculum</h1>
-      {/* <Course course={courses} /> */}
+      {courses.map(course => 
+        <Course
+          key={course.id}
+          course={course}
+        />
+      )}
     </div>
     )
 }
