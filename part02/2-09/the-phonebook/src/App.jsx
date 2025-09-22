@@ -9,6 +9,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('name')
   const [newNumber, setNewNumber] = useState('phone number')
+  const [filter, setFilter] = useState('')
 
   const handleNewName = (event) => {
     console.log(event.target.value)
@@ -38,20 +39,28 @@ const App = () => {
     setNewNumber('phone number')
   }
 
+  const handleFilter = (event) => {
+    setFilter(event.target.value)
+  }
 
-
+  const personsToShow = persons.filter(person =>
+    person.name.toLowerCase().includes(filter.toLowerCase())
+  )
+  
+  // A form is mainly useful when you want to submit data (like adding a new contact)
+  // The filter input is just for updating state on every keystroke — there’s no submit action.
   return (
     <div>
       <h1>Phonebook</h1>
-      <form>
+      {/* <form> */}
         <div>
           filter shown with 
           <input
-            value={''}
-            // onChange={handleFilter}
+            value={filter}
+            onChange={handleFilter}
           />
         </div>
-      </form>
+      {/* </form> */}
       <h2>Add a new</h2>
       <form>
         <div>
@@ -77,7 +86,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(person =>          
+      {personsToShow.map(person =>          
         <p key={person.name}>
           {person.name} {person.number}
         </p>
