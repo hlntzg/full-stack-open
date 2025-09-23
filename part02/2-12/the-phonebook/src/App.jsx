@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import phonebookPerson from './services/phonebookPerson'
 import Persons from './components/Persons'
 import SearchFilter from './components/SearchFilter'
 import PersonForm from './components/PersonForm'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('name')
-  const [newNumber, setNewNumber] = useState('phone number')
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
     // GET request
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    phonebookPerson
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -45,12 +46,12 @@ const App = () => {
     }
 
     // POST request
-    axios
-      .post('http://localhost:3001/persons', personObject)
+    phonebookPerson
+      .create(personObject)
       .then(response => {
         setPersons(persons.concat(response.data))
-        setNewName('name')
-        setNewNumber('phone number')
+        setNewName('')
+        setNewNumber('')
       })
   }
 
