@@ -39,6 +39,11 @@
       "id": "8",
       "content": "a new note...",
       "important": true
+    },
+    {
+      "id": "9",
+      "content": "a new note...",
+      "important": false
     }
   ]
 }

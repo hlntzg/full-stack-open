@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Note from './components/Note'
+import noteService from './services/notes'
 
-const App = (props) => {
+const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('a new note...')
+  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
 
   useEffect (() => {
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        setNotes(response.data)
+    // GET request
+    noteService
+      .getAll()
+      // .then(response => {
+      //   setNotes(response.data)
+      .then(initialNotes => {
+        setNotes(initialNotes)
       })
   }, [])
 
-  // const result = condition ? val1 : val2
   const notesToShow = showAll ? 
     notes : notes.filter(note => note.important === true)
 
@@ -29,12 +32,12 @@ const App = (props) => {
     }
 
     // POST request
-    axios
-    .post('http://localhost:3001/notes', noteObject)
-    .then(response => {
-      setNotes(notes.concat(response.data))
-      setNewNote('a new note...')
-    })
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+        setNewNote('')
+      })
   }
   
   // event handler that synchronizes the changes made to the input
@@ -44,17 +47,14 @@ const App = (props) => {
   }
 
   const toggleImportanceOf = (id) => {
-  const note = notes.find(n => n.id === id)
-  // create a copy object using object spread syntax
-  // why make a copy? -> because we don't want to modify the existing object directly
-  // the variable note is a reference to an item in the notes array in the component's state
-  const changedNote = { ...note, important: !note.important }
-
-  axios
-    .put(`http://localhost:3001/notes/${id}`, changedNote)
-    .then(response => {
-      setNotes(notes.map(note => note.id === id ? response.data : note))
-  })
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+    // PUT request
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id === id ? returnedNote : note))
+      })
 }
 
   return (
