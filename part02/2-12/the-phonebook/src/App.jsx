@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import phonebookPerson from './services/phonebookPerson'
 import Persons from './components/Persons'
 import SearchFilter from './components/SearchFilter'
@@ -48,8 +47,8 @@ const App = () => {
     // POST request
     phonebookPerson
       .create(personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
       })
@@ -63,6 +62,24 @@ const App = () => {
     person.name.toLowerCase().includes(filter.toLowerCase())
   )
   
+  const handleDetelePerson = (id) => {
+    const personToDelete = persons.find(p => p.id === id)
+    console.log(personToDelete)
+    // DELETE request
+    phonebookPerson
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
+      .catch(error => {
+        alert(
+          `the person '${personToDelete.name}' was already deleted from server`
+        )
+        // the deleted person gets filtered out from the state
+        setPersons(persons.filter(p => p.id !== id))
+      })
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -83,6 +100,7 @@ const App = () => {
         <Persons
           key={person.id}
           person={person}
+          deletedPerson={() => {handleDetelePerson(person.id)}} 
         />
       )}
     </div>
