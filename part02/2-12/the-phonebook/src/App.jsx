@@ -64,20 +64,22 @@ const App = () => {
   
   const handleDetelePerson = (id) => {
     const personToDelete = persons.find(p => p.id === id)
-    console.log(personToDelete)
-    // DELETE request
-    phonebookPerson
-      .remove(id)
-      .then(() => {
-        setPersons(persons.filter(p => p.id !== id))
-      })
-      .catch(error => {
-        alert(
-          `the person '${personToDelete.name}' was already deleted from server`
-        )
-        // the deleted person gets filtered out from the state
-        setPersons(persons.filter(p => p.id !== id))
-      })
+
+    if (window.confirm(`Delete ${personToDelete.name} ?`)){
+      console.log(personToDelete)
+      // DELETE request
+      phonebookPerson
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+        .catch(error => {
+          alert(
+            `the person '${personToDelete.name}' was already deleted from server`
+          )
+          // the deleted person gets filtered out from the state
+          setPersons(persons.filter(p => p.id !== id))
+        })}
   }
 
   return (
