@@ -32,15 +32,15 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
 
-    const invalidName = persons.find(person => person.name === newName)
-    if (invalidName){
-      if (!window.confirm(`${invalidName} is alreday added to phonebook, do you want to update the number?`)){
+    const invalidPerson = persons.find(person => person.name === newName)
+    if (invalidPerson){
+      if (!window.confirm(`${invalidPerson.name} is alreday added to phonebook, do you want to update the number?`)){
         console.log(newName)
         setNewName('')
         setNewNumber('')
         return
       } else {
-        const personObject = {...invalidName, number: newNumber}
+        const personObject = {...invalidPerson, number: newNumber}
         phonebookPerson
           .update(personObject.id, personObject)
           .then(returnedPerson => {
@@ -50,10 +50,8 @@ const App = () => {
           })
           .catch(error => {
             alert(
-              `the person '${invalidName.name}' was already deleted from server`
+              `something when wrong while updating '${invalidPerson.name}' information`
             )
-            // the deleted person gets filtered out from the state
-            setPersons(persons.filter(p => p.id !== invalidName.id))
           })
         return
     }}
@@ -71,6 +69,9 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        alert(`something when wrong while adding '${personObject.name}'`) 
       })
   }
 
