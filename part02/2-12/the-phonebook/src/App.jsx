@@ -11,6 +11,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
+    // GET request
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
@@ -19,12 +20,12 @@ const App = () => {
   }, [])
 
   const handleNewName = (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const handleNewNumber = (event) => {
-    console.log(event.target.value)
+    // console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
@@ -40,10 +41,17 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
+      id: String(persons.length + 1),
     }
-    setPersons(persons.concat(personObject))
-    setNewName('name')
-    setNewNumber('phone number')
+
+    // POST request
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('name')
+        setNewNumber('phone number')
+      })
   }
 
   const handleFilter = (event) => {
