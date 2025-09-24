@@ -24,51 +24,6 @@
       "id": "5",
       "content": "POST is used to add data",
       "important": true
-    },
-    {
-      "id": "6",
-      "content": "a new note...",
-      "important": true
-    },
-    {
-      "id": "7",
-      "content": "a new note...",
-      "important": false
-    },
-    {
-      "id": "8",
-      "content": "a new note...",
-      "important": true
-    },
-    {
-      "id": "9",
-      "content": "a new note...",
-      "important": false
-    },
-    {
-      "id": "0eaf",
-      "important": true
-    },
-    {
-      "id": "96bd",
-      "important": true
-    },
-    {
-      "id": "fe1e"
-    },
-    {
-      "id": "df92"
-    },
-    {
-      "id": "5176"
-    },
-    {
-      "id": "13d7"
-    },
-    {
-      "id": "16",
-      "content": "fff",
-      "important": true
     }
   ]
 }
