@@ -35,7 +35,7 @@ const App = () => {
       )
 
       if (matches.length === 1) {
-        //  GET request for selected country
+        //  GET request for selected country 
         countriesService
           .getByCountry(matches[0].name.common)
           .then(countryData => {
