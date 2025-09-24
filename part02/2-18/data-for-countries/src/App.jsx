@@ -26,6 +26,7 @@ const App = () => {
   
   const handleCountryChange = (event) => {
     const value = event.target.value
+  
     setSearchCountry(value)
 
     if (value) {
@@ -39,6 +40,7 @@ const App = () => {
           .getByCountry(matches[0].name.common)
           .then(countryData => {
             setSelectedCountry(countryData)
+            console.log(countryData)
           })
       } else {
         setSelectedCountry(null)
@@ -55,15 +57,24 @@ const App = () => {
   return (
     <div>
       <h1>Data for Countries</h1>
-      <SearchCountry searchCountry={searchCountry} handleSearchCountry={handleCountryChange} />
-      {filteredCountries.length > 10 && <p>Too many matches, specify another filter</p>}
-      {filteredCountries.length > 1 && filteredCountries.length <= 10 && (
-        <CountriesList countries={filteredCountries} />
-      )}
-      {filteredCountries.length === 1 && (
-        <DisplayCountry country={selectedCountry} />
-      )}
-    </div>
+      <SearchCountry
+        searchCountry={searchCountry}
+        handleSearchCountry={handleCountryChange}
+      />
+      {searchCountry && (
+        <>
+          {filteredCountries.length > 10 && (
+            <p>Too many matches, specify another filter</p>
+          )}
+          {filteredCountries.length > 1 && filteredCountries.length <= 10 && (
+            <CountriesList countries={filteredCountries}/>
+          )}
+          {filteredCountries.length === 1 && (
+            <DisplayCountry country={selectedCountry}/>
+          )}
+        </>
+    )}
+  </div>
   )
 }
 
