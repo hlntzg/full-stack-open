@@ -5,11 +5,15 @@ import Notification from './components/Notification'
 import Footer from './components/Footer'
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
+  // !! effect is executed only after the first render.
+  // Note: If the second parameter is an empty array [], its content never changes
+  // and the effect is only run after the first render of the component. This is
+  // exactly what we want when we are initializing the app state from the server.
   useEffect (() => {
     // GET request
     noteService
@@ -18,6 +22,11 @@ const App = () => {
         setNotes(initialNotes)
       })
   }, [])
+
+  // do not render anything if notes is still null
+  if (!notes) { 
+    return null 
+  }
 
   const notesToShow = showAll ? 
     notes : notes.filter(note => note.important === true)
