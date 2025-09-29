@@ -22,13 +22,23 @@ let notes = [
 ]
 
 app.get('/', (request, response) => {
-  // send method of the response object is used to send the response
   response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
-  // the json method of the response object can be used to send a JSON response
   response.json(notes)
+})
+
+// route for fetching a single resource
+app.get('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  const note = notes.find(note => note.id === id)
+  // if note is not found, note will be undefined and evalute to false in JS
+  if (note) {
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
 })
 
 const PORT = 3001
