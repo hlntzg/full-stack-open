@@ -26,6 +26,9 @@ Operations on resources:
 - DELETE: removes
 - PUT: replaces the entire identified resource with the request data
 - PATCH: replaces a part of the identified resource with the request data
+Properties related to request types:
+- GET, HEAD: safety
+- All requests except POST: idempotency
 
 ## Testing backend
 - Command line program `curl`
