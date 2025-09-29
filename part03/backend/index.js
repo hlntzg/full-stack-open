@@ -21,6 +21,17 @@ let notes = [
   }
 ]
 
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+app.use(express.json())
+app.use(requestLogger)
+
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
@@ -49,13 +60,6 @@ app.delete('/api/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
-// route for creating a new resource
-app.use(express.json()) // middleware for parsing JSON bodies
-// Without the json-parser, the body property would be undefined. 
-// The json-parser takes the JSON data of a request, transforms it into
-// a JavaScript object and then attaches it to the body property of 
-// the request object before the route handler is called.
-
 const generateId = () => {
   const maxId = notes.length > 0
     // get the maximum id in the notes array
@@ -65,6 +69,7 @@ const generateId = () => {
   return String(maxId + 1)
 }
 
+// route for creating a new resource
 app.post('/api/notes', (request, response) => {
   const body = request.body
 
@@ -84,6 +89,14 @@ app.post('/api/notes', (request, response) => {
   response.json(note)
 })
 
+// handler of requests made to unknown endpoints
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
 const PORT = 3001
-app.listen(PORT)
-console.log(`Server running on port ${PORT}`)
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
