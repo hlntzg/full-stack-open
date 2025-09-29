@@ -1,0 +1,2 @@
+- run the program directly with Node from the command line: `node index.js`
+- run it as an npm script: `npm start`
