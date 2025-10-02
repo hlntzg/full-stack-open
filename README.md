@@ -2,7 +2,7 @@
 
 - npm: tool used for managing JavaScript packages
 - React applications: `create vite@latest -- --template react`
-- Backend exercises: `npm init`
+- Backend exercises: `npm init`, `npm install express` (library)
 - Build the backend on top of NodeJS, which is a JavaScript runtime based on Google's Chrome V8 JavaScript engine
 - Interactive node-repl: https://nodejs.org/docs/latest-v18.x/api/repl.html
 
