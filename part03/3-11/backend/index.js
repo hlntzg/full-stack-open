@@ -52,6 +52,10 @@ app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
 
+app.get('/', (req, res) => {
+  res.send('<h1>Phonebook backend</h1>')
+})
+
 // route for fetching all resources
 app.get('/api/persons', (request, response) => {
   response.json(persons)
