@@ -34,3 +34,7 @@ Properties related to request types:
 - Command line program `curl`
 - Postman: [Postman Desktop](https://www.postman.com/), also on VS Code extension
 - VS Code [REST Client plugin](https://marketplace.visualstudio.com/items?itemName=humao.rest-client): `requests/file.rest` with REST client requests; by clicking `Send Request` text, the REST client will execute the HTTP request and the response from the server is opened in the editor. [instructions documentation](https://github.com/Huachao/vscode-restclient/blob/master/README.md#usage)
+
+## Debugging Node applications
+- Visual Studio Code's 
+- Chrome developer console: start the application with `node --inspect index.js`
