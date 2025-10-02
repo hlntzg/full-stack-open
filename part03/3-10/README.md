@@ -1,4 +1,4 @@
-### Full Stack Phonebook (3.11)
+### Phonebook backend (3.10)
 
 The backend was deployed to the internet using [Render](https://render.com/). The online application is available at:
-https://phonebook-nbzy.onrender.com/
+https://phonebook-backend-t3j7.onrender.com/
