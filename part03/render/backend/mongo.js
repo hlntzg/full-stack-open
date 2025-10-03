@@ -14,19 +14,39 @@ mongoose.set('strictQuery',false)
 
 mongoose.connect(url)
 
+// Everything in Mongoose starts with a Schema. Each schema maps to a 
+// MongoDB collection and defines the shape of the documents within that collection.
 const noteSchema = new mongoose.Schema({
   content: String,
   important: Boolean,
 })
 
+// The .model() function makes a copy of schema
+// The first argument is the singular name of the collection your model is for. 
+// Mongoose automatically looks for the plural, lowercased version of your model name.
 const Note = mongoose.model('Note', noteSchema)
 
-const note = new Note({
-  content: 'HTML is easy',
-  important: true,
-})
+// Creating and saving objects
+// const note = new Note({
+//   content: 'one more HTML is easy',
+//   important: true,
+// })
 
-note.save().then(result => {
-  console.log('note saved!')
+// note
+//   .save()
+//   .then(result => {
+//     console.log('note saved!')
+//     console.log(result)
+//     mongoose.connection.close()
+// })
+
+// Retrieving/fetching objects from the database
+// Note.find({ important: true }).then(result => {
+  // ...
+// })
+Note.find({}).then(result => {
+  result.forEach(note => {
+    console.log(note)
+  })
   mongoose.connection.close()
 })
