@@ -1,25 +1,37 @@
 // import express which this time is a function used to create
 // an Express application and stored in the app variable
 const express = require('express')
+const mongoose = require('mongoose')
+const Note = require('./models/note')
+
 const app = express()
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
+// const username = 'fullstack'
+// const password = process.argv[2]
+// const url = `mongodb+srv://${username}:${password}@cluster0.2xgojtk.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+
+// MongoDB connection (from env var passed in CLI)
+const mongoUrl = process.env.MONGODB_URI
+console.log('Connecting to', mongoUrl)
+
+
+mongoose.set('strictQuery',false)
+mongoose.connect(mongoUrl)
+
+// const noteSchema = new mongoose.Schema({
+//   content: String,
+//   important: Boolean,
+// })
+// noteSchema.set('toJSON', {
+//   transform: (document, returnedObject) => {
+//     // _id property of Mongoose is in fact an object so we convert it to string
+//     returnedObject.id = returnedObject._id.toString()
+//     delete returnedObject._id
+//     delete returnedObject.__v
+//   }
+// })
+
+// const Note = mongoose.model('Note', noteSchema)
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -29,20 +41,20 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
-// const cors = require('cors')
-
-// app.use(cors())
+// middleware to parse incoming JSON requests
 app.use(express.json())
 app.use(requestLogger)
 app.use(express.static('dist'))
-
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  // response.json(notes)
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 // route for fetching a single resource
