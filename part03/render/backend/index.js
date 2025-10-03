@@ -1,5 +1,8 @@
 // import express which this time is a function used to create
 // an Express application and stored in the app variable
+
+// It's important that dotenv gets imported before the note model is imported. 
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const Note = require('./models/note')
@@ -114,7 +117,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 // use the PORT environment variable if it exists, otherwise use port 3001
-const PORT =  process.env.PORT || 3001
+const PORT =  process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
