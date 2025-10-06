@@ -80,15 +80,6 @@ app.get('/api/notes/:id', (request, response) => {
   })
 })
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    // get the maximum id in the notes array
-    // note to spread operator (...) which expands the array into a list of values
-    ? Math.max(...notes.map(n => Number(n.id)))
-    : 0
-  return String(maxId + 1)
-}
-
 // route for creating a new resource
 app.post('/api/notes', (request, response) => {
   const body = request.body
