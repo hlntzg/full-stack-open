@@ -62,14 +62,18 @@ app.get('/api/notes', (request, response) => {
 
 // route for fetching a single resource
 app.get('/api/notes/:id', (request, response) => {
-  const id = request.params.id
-  const note = notes.find(note => note.id === id)
-  // if note is not found, note will be undefined and evalute to false in JS
-  if (note) {
-    response.json(note)
-  } else {
-    response.status(404).end()
-  }
+  Note.findById(request.params.id)
+    .then(note => {
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).end()
+    })
 })
 
 // route for deleting a resource
