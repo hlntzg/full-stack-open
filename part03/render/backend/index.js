@@ -1,18 +1,14 @@
 require('dotenv').config()
 const express = require('express')
-const mongoose = require('mongoose')
 const Note = require('./models/note')
 
 const app = express()
 
+let notes = []
+
 // MongoDB connection (from env var passed in CLI)
 const mongoUrl = process.env.MONGODB_URI
 console.log('Connecting to', mongoUrl)
-
-
-mongoose.set('strictQuery',false)
-mongoose.connect(mongoUrl)
-
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -58,12 +54,16 @@ app.get('/api/notes/:id', (request, response) => {
 })
 
 // route for deleting a resource
-// Mongoose's findById method
 app.delete('/api/notes/:id', (request, response) => {
-  const id = request.params.id
-  notes = notes.filter((note) => note.id !== id)
+  // const id = request.params.id
+  // notes = notes.filter((note) => note.id !== id)
 
-  response.status(204).end()
+  // response.status(204).end()
+    Note.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 // route for creating a new resource
