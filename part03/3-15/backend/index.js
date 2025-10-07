@@ -1,22 +1,15 @@
 require('dotenv').config()
 const express = require('express');
 const Person = require('./models/person')
-const morgan = require('morgan');
 
 const app = express();
 
-// middleware for parsing JSON bodies
-app.use(express.json())
-// middleware for logging requests
-// Define a token for request body
-morgan.token('body', (req) => {
-  return req.method === 'POST' ? JSON.stringify(req.body) : '';
-});
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
-
 // initial data
 let persons = []
+
+// MongoDB connection (from env var passed in CLI)
+const mongoUrl = process.env.MONGODB_URI
+console.log('Connecting to', mongoUrl)
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -26,9 +19,9 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
-app.use(requestLogger)
 app.use(express.static('dist'))
 app.use(express.json())
+app.use(requestLogger)
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -59,10 +52,14 @@ app.get('/api/persons/:id', (request, response) => {
 
 // route for deleting a person by id
 app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
+  Person.findByIdAndDelete(request.params.id)
+    .then(note => {
+      response.status(404).end()
+    })
+  .catch(error => {
+    console.log(error)
+    response.status(400).send({ error: 'malformatted id' })
+  })
 })
 
 // route for adding a new person

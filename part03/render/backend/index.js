@@ -28,7 +28,6 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-// middleware to parse incoming JSON requests
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(requestLogger)
