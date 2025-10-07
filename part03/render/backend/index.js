@@ -43,7 +43,7 @@ app.get('/api/notes', (request, response) => {
 })
 
 // route for fetching a single resource
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
     .then(note => {
       if (note) {
@@ -58,7 +58,7 @@ app.get('/api/notes/:id', (request, response) => {
 // route for deleting a resource
 app.delete('/api/notes/:id', (request, response, next) => {
   Note.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
