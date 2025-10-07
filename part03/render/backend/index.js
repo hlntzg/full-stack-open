@@ -57,8 +57,8 @@ app.get('/api/notes/:id', (request, response) => {
 })
 
 // route for deleting a resource
-app.delete('/api/notes/:id', (request, response) => {
-    Note.findByIdAndDelete(request.params.id)
+app.delete('/api/notes/:id', (request, response, next) => {
+  Note.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
     })
