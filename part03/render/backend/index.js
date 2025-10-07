@@ -18,6 +18,16 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
 // middleware to parse incoming JSON requests
 app.use(express.static('dist'))
 app.use(express.json())
@@ -43,22 +53,11 @@ app.get('/api/notes/:id', (request, response) => {
         response.status(404).end()
       }
     })
-    // .catch(error => {
-    //   console.log(error)
-    //   // response.status(500).end()
-    //   // if findById method will throw an error causing the returned promise
-    //   // to be rejected when a malformed id is given as an argumen
-    //   response.status(400).send({ error: 'malformatted id' })
-    // })
     .catch(error => next(error))
 })
 
 // route for deleting a resource
 app.delete('/api/notes/:id', (request, response) => {
-  // const id = request.params.id
-  // notes = notes.filter((note) => note.id !== id)
-
-  // response.status(204).end()
     Note.findByIdAndDelete(request.params.id)
     .then(result => {
       response.status(204).end()
@@ -84,23 +83,33 @@ app.post('/api/notes', (request, response) => {
   })
 })
 
+// route for update a single note
+app.put('/api/notes/:id', (request, response, next) => {
+  const { content, important } = request.body
+  Note.findById(request.params.id)
+    .then(note => {
+      if (!note) {
+        return response.status(404).end()
+      }
+
+      note.content = content
+      note.important = important
+
+      return note.save().then((updatedNote) => {
+        response.json(updatedNote)
+      })
+    })
+    .catch(error => next(error))
+})
+
+
 // handler of requests made to unknown endpoints
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
+
 // handler of requests with unknown endpoint
 app.use(unknownEndpoint)
-
-
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
-
-  next(error)
-}
 // handler of requests with result to errors
 app.use(errorHandler)
 
