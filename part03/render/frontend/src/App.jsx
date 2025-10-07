@@ -37,7 +37,7 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      id: String(notes.length + 1),
+      // id: String(notes.length + 1),
     }
 
     // POST request
@@ -46,6 +46,7 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
+        setErrorMessage(null)
       })
   }
   
