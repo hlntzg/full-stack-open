@@ -14,7 +14,7 @@ mongoose.set('strictQuery',false)
 
 mongoose.connect(url)
 
-// Everything in Mongoose starts with a Schema. Each schema maps to a 
+// Everything in Mongoose starts with a Schema. Each schema maps to a
 // MongoDB collection and defines the shape of the documents within that collection.
 const noteSchema = new mongoose.Schema({
   content: String,
@@ -22,7 +22,7 @@ const noteSchema = new mongoose.Schema({
 })
 
 // The .model() function makes a copy of schema
-// The first argument is the singular name of the collection your model is for. 
+// The first argument is the singular name of the collection your model is for.
 // Mongoose automatically looks for the plural, lowercased version of your model name.
 const Note = mongoose.model('Note', noteSchema)
 
@@ -42,7 +42,7 @@ const Note = mongoose.model('Note', noteSchema)
 
 // Retrieving/fetching objects from the database
 // Note.find({ important: true }).then(result => {
-  // ...
+// ...
 // })
 Note.find({}).then(result => {
   result.forEach(note => {
