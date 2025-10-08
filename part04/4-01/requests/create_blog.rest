@@ -5,7 +5,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "fullstack course 42",
+    "title": "fullstack course testing",
     "author": "University of Helsinki",
     "url": "https://fullstackopen.com/",
     "likes": "10"
