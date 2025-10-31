@@ -51,6 +51,45 @@ test('a specific note is within the returned notes', async () => {
   assert(contents.includes('HTML is easy'))
 })
 
+// test that add a new note and verify the number of notes returned
+test('a valid note can be added ', async () => {
+  const newNote = {
+    content: 'async/await simplifies making async calls',
+    important: true,
+  }
+
+  await api
+    .post('/api/notes')
+    .send(newNote)
+    .expect(201) // returned status code expected from POST
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/notes')
+
+  const contents = response.body.map(r => r.content)
+
+  assert.strictEqual(response.body.length, initialNotes.length + 1)
+
+  assert(contents.includes('async/await simplifies making async calls'))
+})
+
+// test note without content should not be saved
+test('note without content is not added', async () => {
+  const newNote = {
+    important: true
+  }
+
+  await api
+    .post('/api/notes')
+    .send(newNote)
+    .expect(400)
+
+  const response = await api.get('/api/notes')
+
+  assert.strictEqual(response.body.length, initialNotes.length)
+})
+
+
 // close the database connection used by Mongoose
 after(async () => {
   await mongoose.connection.close()
