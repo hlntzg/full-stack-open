@@ -15,16 +15,22 @@ notesRouter.get('/', async (request, response) => {
   response.json(notes)
 })
 
-notesRouter.get('/:id', (request, response, next) => {
-  Note.findById(request.params.id)
-    .then(note => {
-      if (note) {
-        response.json(note)
-      } else {
-        response.status(404).end()
-      }
-    })
-    .catch(error => next(error))
+notesRouter.get('/:id', async (request, response) => {
+  // Note.findById(request.params.id)
+  //   .then(note => {
+  //     if (note) {
+  //       response.json(note)
+  //     } else {
+  //       response.status(404).end()
+  //     }
+  //   })
+  //   .catch(error => next(error))
+  const note = await Note.findById(request.params.id)
+  if (note) {
+    response.json(note)
+  } else {
+    response.status(404).end()
+  }
 })
 
 // When using async/await syntax, Express will automatically
