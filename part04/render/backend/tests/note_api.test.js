@@ -10,14 +10,21 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Note.deleteMany({})
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+  console.log('cleared')
+
+  const noteObjects = helper.initialNotes
+    .map(note => new Note(note))
+  const promiseArray = noteObjects.map(note => note.save())
+  // Wait for all of the asynchronous operations to finish
+  // executing with the Promise.all method
+  // Promise.all executes the promises it receives in parallel.
+  // [!] If the promises need to be executed in a particular order, this will be problematic. 
+  await Promise.all(promiseArray)
 })
 
 
 test('notes are returned as json', async () => {
+  console.log('entered test')
   await api
     .get('/api/notes')
     .expect(200)
