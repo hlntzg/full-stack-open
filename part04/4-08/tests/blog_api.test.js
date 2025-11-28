@@ -1,4 +1,4 @@
-const assert = require('node:assert')
+const assert = require('node:assert') // for adding the test database using the mongo.js program 
 const { test, after, beforeEach } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
@@ -25,13 +25,15 @@ const initialBlogs = [
 beforeEach(async () => {
   console.log('cleared database')
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
+
+  // let blogObject = new Blog(initialBlogs[0])
+  // await blogObject.save()
+  // blogObject = new Blog(initialBlogs[1])
+  // await blogObject.save()
+  await Blog.insertMany(initialBlogs)
 })
 
-test('blogs are returned as json', async () => {
+test.only('blogs are returned as json', async () => {
   console.log('entered test')
   await api
     .get('/api/blogs')
@@ -39,7 +41,7 @@ test('blogs are returned as json', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('all blogs are returned', async () => {
+test.only('all blogs are returned', async () => {
   const response = await api.get('/api/blogs')
 
   assert.strictEqual(response.body.length, initialBlogs.length)
