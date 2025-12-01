@@ -65,7 +65,8 @@ test.only('if the likes property is missing, it defaults to 0', async () => {
     title: 'testing a blog without likes',
     author: 'author4',
     url: 'ddd',
-    // likes is missing, required change in Mongoose model models/blog.js
+    // likes is missing
+    // required change in Mongoose model models/blog.js
   }
 
   const response = await api
