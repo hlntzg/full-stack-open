@@ -1,0 +1,12 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik15VXNlciIsImlkIjoiNjkyZWU5ODA3OGE5YzZiNjhkOGU0YTg4IiwiaWF0IjoxNzY0NjgyMTU0fQ.BjKEA1mGpgz4uhEbG9pkL1GS70wR67BH4mFL8ibpg6Q
+
+{
+    "title": "Delete this blog",
+    "url": "https://example.com/",
+    "likes": "10"
+}
