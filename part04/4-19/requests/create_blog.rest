@@ -1,0 +1,13 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVyaWsxMiIsImlkIjoiNjkyZWQzZGZhNGI3YzBjMDE0ODU4MmU1IiwiaWF0IjoxNzY0Njc5NDI2fQ.UqbE5DfMnZQcgmzvnJ6-K60dBwiEU9xXXwHMXlWkwaI
+
+{
+    "title": "Another course of JWT and Authorization header",
+    "author": "University of Helsinki",
+    "url": "https://example.com/",
+    "likes": "10"
+}
