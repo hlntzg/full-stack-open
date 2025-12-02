@@ -24,7 +24,11 @@ const errorHandler = (error, request, response, next) => {
   } // If the token is missing or it is invalid, the exception JsonWebTokenError is raised. 
   else if (error.name ===  'JsonWebTokenError') {
     return response.status(401).json({ error: 'token invalid' })
-  }
+  } // In the case of an expired token
+  else if (error.name === 'TokenExpiredError') {
+    return response.status(401).json({
+      error: 'token expired'
+    })
   
   next(error)
 }
