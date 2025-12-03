@@ -29,6 +29,19 @@ const App = () => {
       })
   }, [])
 
+  // handle the first loading of the page
+  // The empty array as the parameter of the effect ensures that the effect is 
+  // executed only when the component is rendered for the first time
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  }, [])
+
+
   // do not render anything if notes is still null
   if (!notes) { 
     return null 
@@ -123,6 +136,11 @@ const App = () => {
 
     try {
       const user = await loginService.login({ username, password })
+
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      ) 
+
       noteService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -141,7 +159,6 @@ const App = () => {
       <Notification message={errorMessage} />
 
       {!user && loginForm()}
-      {/* {user && noteForm()} */}
       {user && (
         <div>
           <p>{user.name} logged in</p>
