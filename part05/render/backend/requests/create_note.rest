@@ -1,0 +1,11 @@
+GET http://localhost:3001/api/notes/
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imh1dHppZyIsImlkIjoiNjkyZWE0ZWM5MmMwMmFmNjhhNmUyMzQ3IiwiaWF0IjoxNzY0NjY0ODYxfQ.TqI_NR7CZJ3WQUqZJR73ImLLp0J5hqdGjhBSP7VjTcQ
+
+{
+  "content": "JWT note for the User Authorization new notes",
+  "important": false
+}

@@ -1,0 +1,10 @@
+GET http://localhost:3001/api/notes
+
+###
+PUT http://localhost:3001/api/notes/68e4b960418978fb262741f4
+Content-Type: application/json
+
+{
+  "content": "New to be updated",
+  "important": false
+}
