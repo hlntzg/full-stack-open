@@ -4,12 +4,14 @@ import Note from './components/Note'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 
 import noteService from './services/notes'
 import loginService from './services/login'
 
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false)
+  // const [loginVisible, setLoginVisible] = useState(false)
   const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
@@ -18,10 +20,6 @@ const App = () => {
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
 
-  // !! effect is executed only after the first render.
-  // Note: If the second parameter is an empty array [], its content never changes
-  // and the effect is only run after the first render of the component. This is
-  // exactly what we want when we are initializing the app state from the server.
   useEffect (() => {
     // GET request
     noteService
@@ -32,8 +30,6 @@ const App = () => {
   }, [])
 
   // handle the first loading of the page
-  // The empty array as the parameter of the effect ensures that the effect is 
-  // executed only when the component is rendered for the first time
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
@@ -58,7 +54,6 @@ const App = () => {
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
-      // id: String(notes.length + 1),
     }
 
     // POST request
@@ -95,41 +90,42 @@ const App = () => {
   }
 
   // login form
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+  // const loginForm = () => {
+  //   const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+  //   const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button 
-            onClick={() => setLoginVisible(true)}>
-              log in
-          </button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
+  //   return (
+  //     <div>
+  //       <div style={hideWhenVisible}>
+  //         <button 
+  //           onClick={() => setLoginVisible(true)}>
+  //             log in
+  //         </button>
+  //       </div>
+  //       <div style={showWhenVisible}>
+  //         <LoginForm
+  //           username={username}
+  //           password={password}
+  //           handleUsernameChange={({ target }) => setUsername(target.value)}
+  //           handlePasswordChange={({ target }) => setPassword(target.value)}
+  //           handleSubmit={handleLogin}
+  //         />
+  //         <button onClick={() => setLoginVisible(false)}>cancel</button>
+  //       </div>
+
+  //     </div>
+  //   )
+  // }
 
   // add a note form
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input 
-        value={newNote}
-        onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
-  )
+  // const noteForm = () => (
+  //   <form onSubmit={addNote}>
+  //     <input 
+  //       value={newNote}
+  //       onChange={handleNoteChange} />
+  //     <button type="submit">save</button>
+  //   </form>
+  // )
 
   // login
   const handleLogin = async event => {
@@ -160,11 +156,27 @@ const App = () => {
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {!user && loginForm()}
+      {!user && 
+        <Togglable buttonLabel='login'>
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+        </Togglable>
+      }
       {user && (
         <div>
           <p>{user.name} logged in</p>
-          {noteForm()}
+          <Togglable buttonLabel="new note">
+            <NoteForm
+              onSubmit={addNote}
+              value={newNote}
+              handleChange={handleNoteChange}
+            />
+          </Togglable>
         </div>
       )}
 
