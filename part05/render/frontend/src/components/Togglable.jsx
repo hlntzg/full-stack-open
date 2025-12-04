@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useImperativeHandle } from 'react'
 
 const Togglable = (props) => {
   const [visible, setVisible] = useState(false)
@@ -9,6 +9,12 @@ const Togglable = (props) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
+
+  // The useImperativeHandle function is a React hook, that is used for
+  // defining functions in a component, which can be invoked from outside of the component
+  useImperativeHandle(props.ref, () => {
+    return { toggleVisibility }
+  })
 
   return (
     <div>
