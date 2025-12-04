@@ -31,7 +31,8 @@ const App = () => {
 
   // handle the first loading of the page
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem(
+      'loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -48,27 +49,14 @@ const App = () => {
   const notesToShow = showAll ? 
     notes : notes.filter(note => note.important === true)
 
-  const addNote = (event) => {
-    event.preventDefault()
-
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    }
-
+  const addNote = (noteObject) => {
     // POST request
     noteService
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setNewNote('')
         setErrorMessage(null)
       })
-  }
-  
-  const handleNoteChange = (event) => {
-    // console.log(event.target.value)
-    setNewNote(event.target.value)
   }
 
   const toggleImportanceOf = (id) => {
@@ -89,55 +77,15 @@ const App = () => {
     })  
   }
 
-  // login form
-  // const loginForm = () => {
-  //   const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-  //   const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
-  //   return (
-  //     <div>
-  //       <div style={hideWhenVisible}>
-  //         <button 
-  //           onClick={() => setLoginVisible(true)}>
-  //             log in
-  //         </button>
-  //       </div>
-  //       <div style={showWhenVisible}>
-  //         <LoginForm
-  //           username={username}
-  //           password={password}
-  //           handleUsernameChange={({ target }) => setUsername(target.value)}
-  //           handlePasswordChange={({ target }) => setPassword(target.value)}
-  //           handleSubmit={handleLogin}
-  //         />
-  //         <button onClick={() => setLoginVisible(false)}>cancel</button>
-  //       </div>
-
-  //     </div>
-  //   )
-  // }
-
-  // add a note form
-  // const noteForm = () => (
-  //   <form onSubmit={addNote}>
-  //     <input 
-  //       value={newNote}
-  //       onChange={handleNoteChange} />
-  //     <button type="submit">save</button>
-  //   </form>
-  // )
-
   // login
   const handleLogin = async event => {
     event.preventDefault()
 
     try {
       const user = await loginService.login({ username, password })
-
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(user)
       ) 
-
       noteService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -151,34 +99,34 @@ const App = () => {
     }
   }
 
+  const loginForm = () => (
+    <Togglable buttonLabel='login'>
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
+    </Togglable>
+  )
+
+  const noteForm = () => (
+    <div>
+      <p>{user.name} logged in</p>
+      <Togglable buttonLabel='new note'>
+        <NoteForm createNote={addNote} />
+      </Togglable>
+    </div>
+  )
+
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {!user && 
-        <Togglable buttonLabel='login'>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-        </Togglable>
-      }
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          <Togglable buttonLabel="new note">
-            <NoteForm
-              onSubmit={addNote}
-              value={newNote}
-              handleChange={handleNoteChange}
-            />
-          </Togglable>
-        </div>
-      )}
+      {!user && loginForm()}
+      {user && noteForm()}
 
       <div>
         <button 
