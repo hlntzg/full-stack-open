@@ -1,0 +1,13 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhIiwiaWQiOiI2OTMwMmQ0NWYxN2IxMTJjOTI5ZjMzMzQiLCJpYXQiOjE3NjQ3NjUwNTJ9.3wrZb9E4aal59TzLygfG1p-xqUfAHt8D2TyXdDJujLE
+
+{
+    "title": "Other Things I dont know as of 2018",
+    "author": "Dan Abramov",
+    "url": "https://example.com/",
+    "likes": "10"
+}
