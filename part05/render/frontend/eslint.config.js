@@ -45,4 +45,14 @@ export default defineConfig([
       'no-console': 'off'
     },
   },
+  {
+    // ESLint is informed that Vitest keywords 
+    // are globally available in test files
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.vitest
+      }
+    }
+  }
 ])
