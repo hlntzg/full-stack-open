@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -13,9 +13,10 @@ const App = () => {
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('') 
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const blogFormRef = useRef()
+  // const [title, setTitle] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [url, setUrl] = useState('')
   
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
@@ -63,6 +64,8 @@ const App = () => {
 
   const addNewBlog = async (blogObject) => {
     // event.preventDefault()
+
+    blogFormRef.current.toggleVisibility()
 
     try{
       // const newBlog = { title, author, url }
@@ -120,7 +123,7 @@ const App = () => {
                 logout
               </button>
             </p>
-            <Togglable buttonLabel="new blog">
+            <Togglable buttonLabel="new blog" ref={blogFormRef}>
               <BlogForm
                 // onSubmit={addNewBlog}
                 // title={title}
