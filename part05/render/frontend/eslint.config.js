@@ -46,7 +46,7 @@ export default defineConfig([
     },
   },
   {
-    // ESLint is informed that Vitest keywords 
+    // ESLint is informed that Vitest keywords
     // are globally available in test files
     files: ['**/*.test.{js,jsx}'],
     languageOptions: {
