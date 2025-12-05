@@ -13,16 +13,20 @@ test('renders content', async () => {
   //     'Component testing is done with react-testing-library'
   //     , { exact: false })
 
+  //   screen.debug()
+
   // findByText returns a promise. USE ON ASYNC FUNCTION
   // look for an element that contains the text, USE EXTRA OPTION { exact: false }
   const element = await screen.findByText(
     'react-testing-library'
     , { exact: false })
 
+  //   screen.debug(element)
+
   expect(element).toBeDefined()
 })
 
-test('does not render this', () => {
+test('renders content: does not render this', () => {
   const note = {
     content: 'This is a reminder',
     important: true
@@ -41,7 +45,7 @@ test('does not render this', () => {
 // to search for elements based on properties visible to the user, for example, by using the
 // getByText method. This way, the tests better simulate the actual nature of the component
 // and how a user would find the element on the screen.
-test('renders content using querySelector of the object Container', () => {
+test('renders content: querySelector of the object Container', () => {
   const note = {
     content: 'Component testing is done with react-testing-library',
     important: true
@@ -50,7 +54,7 @@ test('renders content using querySelector of the object Container', () => {
   const { container } = render(<Note note={note} />)
 
   const div = container.querySelector('.note')
-//   console.log(container)
+  //   console.log(container)
   expect(div).toHaveTextContent(
     'Component testing is done with react-testing-library'
   )
