@@ -1,18 +1,22 @@
 // simulate text input with userEvent
 
 import { render, screen } from '@testing-library/react'
+
 import NoteForm from './NoteForm'
 import userEvent from '@testing-library/user-event'
 
 test('<NoteForm /> updates parent state and calls onSubmit', async () => {
   const createNote = vi.fn()
   const user = userEvent.setup()
+  const { container } = render(<NoteForm createNote={createNote} />)
 
-  render(<NoteForm createNote={createNote} />)
+//   render(<NoteForm createNote={createNote} />)
 
 // const input = screen.getByRole('textbox') // only one input field
 //   const inputs = screen.getAllByRole('textbox') // multiple inputs, but relies on the order
-  const input = screen.getByLabelText('content')
+//   const input = screen.getByLabelText('content')
+//   const input = screen.getByPlaceholderText('write note content here')
+  const input = container.querySelector('#note-input')
   const sendButton = screen.getByText('save')
 
   // the method type of the userEvent is used to write text to the input field
