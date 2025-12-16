@@ -10,10 +10,14 @@ test('<NoteForm /> updates parent state and calls onSubmit', async () => {
 
   render(<NoteForm createNote={createNote} />)
 
-  const input = screen.getByRole('textbox')
+// const input = screen.getByRole('textbox') // only one input field
+//   const inputs = screen.getAllByRole('textbox') // multiple inputs, but relies on the order
+  const input = screen.getByLabelText('content')
   const sendButton = screen.getByText('save')
 
   // the method type of the userEvent is used to write text to the input field
+// await user.type(input, 'testing a form...') // only one input field
+//   await user.type(inputs[0], 'testing a form...') // multiple inputs, but relies on the order
   await user.type(input, 'testing a form...')
   await user.click(sendButton)
 
