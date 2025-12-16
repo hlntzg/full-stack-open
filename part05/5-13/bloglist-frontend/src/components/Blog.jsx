@@ -19,7 +19,8 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
 
   const loggedUserJSON = window.localStorage
     .getItem('loggedNoteappUser')
-  const user = JSON.parse(loggedUserJSON)
+  // const user = JSON.parse(loggedUserJSON)
+  const user = loggedUserJSON ? JSON.parse(loggedUserJSON) : null
 
   const addLike = () => {
     // console.log('clicked')
@@ -37,14 +38,14 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div style={hideWhenVisible}>
         <div>
           {blog.title}{' '}{blog.author}
           <button onClick={() => setDetailsVisible(true)}>view</button>
         </div>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="blog-details">
         <div>
           {blog.title}{' '}{blog.author}
           <button onClick={() => setDetailsVisible(false)}>hide</button>
@@ -59,7 +60,8 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
         <div>
           {blog.user?.name || 'unknown'}
         </div>
-        {blog.user?.name === user.name &&
+        {/* {blog.user?.name === user.name && */}
+        {user && blog.user?.name === user.name &&
           <div>
             <button onClick={handleRemove}>remove</button>
           </div>}
