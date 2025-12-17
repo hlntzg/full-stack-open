@@ -21,7 +21,27 @@ describe('Note app', () => {
     //   await expect(locator).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Notes' })).toBeVisible();
     await expect(page.getByText('Note app, Department of Computer Science, University of Helsinki 2025')).toBeVisible()
-    })
+  })
+
+  test('login fails with wrong password', async ({ page }) => {
+    await page.getByRole('button', { name: 'login' }).click()
+    await page.getByLabel('username').fill('mluukkai')
+    await page.getByLabel('password').fill('wrong')
+    await page.getByRole('button', { name: 'login' }).click()
+
+    // await expect(page.getByText('wrong credentials')).toBeVisible()
+    // refined test to ensure that the error message is printed exactly in the right place,
+    // i.e. in the element containing the CSS class error (Notification component)
+    const errorDiv = page.locator('.error')
+    await expect(errorDiv).toContainText('wrong')
+
+    // test the application's CSS styles
+    await expect(errorDiv).toHaveCSS('border-style', 'solid')
+    await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)') // colors must be defined to Playwright as rgb codes
+
+    // do not render the message
+    await expect(page.getByText('Matti Luukkainen logged in')).not.toBeVisible()
+  })
 
   test('user can log in', async ({ page }) => {
     await page.getByRole('button', { name: 'login' }).click()
