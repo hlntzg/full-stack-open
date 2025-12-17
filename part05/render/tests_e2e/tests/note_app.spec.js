@@ -1,4 +1,5 @@
 const { test, describe, expect, beforeEach } = require('@playwright/test')
+const { loginWith } = require('./helper')
 
 describe('Note app', () => {
 
@@ -23,11 +24,35 @@ describe('Note app', () => {
     await expect(page.getByText('Note app, Department of Computer Science, University of Helsinki 2025')).toBeVisible()
   })
 
+  test('user can login with correct credentials', async ({ page }) => {
+    // await page.getByRole('button', { name: 'login' }).click()
+
+        // await page.getByRole('textbox').first().fill('mluukkai2')
+        // await page.getByRole('textbox').last().fill('salainen')
+
+        // If there were more than two text fields, 
+        // using the methods first and last is not enough
+        // const textboxes = await page.getByRole('textbox').all()
+        // await textboxes[0].fill('mluukkai2')
+        // await textboxes[1].fill('salainen')
+        // but, this can be problematic to the extent that if the 
+        // registration form is changed, the tests may break
+
+    // await page.getByLabel('username').fill('mluukkai')
+    // await page.getByLabel('password').fill('salainen')
+
+    // await page.getByRole('button', { name: 'login' }).click()
+  
+    await loginWith(page, 'mluukkai', 'salainen')
+    await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
+  })
+
   test('login fails with wrong password', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click()
-    await page.getByLabel('username').fill('mluukkai')
-    await page.getByLabel('password').fill('wrong')
-    await page.getByRole('button', { name: 'login' }).click()
+    // await page.getByRole('button', { name: 'login' }).click()
+    // await page.getByLabel('username').fill('mluukkai')
+    // await page.getByLabel('password').fill('wrong')
+    // await page.getByRole('button', { name: 'login' }).click()
+    await loginWith(page, 'mluukkai', 'wrong')
 
     // await expect(page.getByText('wrong credentials')).toBeVisible()
     // refined test to ensure that the error message is printed exactly in the right place,
@@ -43,37 +68,16 @@ describe('Note app', () => {
     await expect(page.getByText('Matti Luukkainen logged in')).not.toBeVisible()
   })
 
-  test('user can log in', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click()
-
-    // await page.getByRole('textbox').first().fill('mluukkai2')
-    // await page.getByRole('textbox').last().fill('salainen')
-
-    // If there were more than two text fields, 
-    // using the methods first and last is not enough
-    // const textboxes = await page.getByRole('textbox').all()
-    // await textboxes[0].fill('mluukkai2')
-    // await textboxes[1].fill('salainen')
-    // but, this can be problematic to the extent that if the 
-    // registration form is changed, the tests may break
-
-    await page.getByLabel('username').fill('mluukkai')
-    await page.getByLabel('password').fill('salainen')
-
-    await page.getByRole('button', { name: 'login' }).click()
-  
-    await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
-  })
-
   // the execution of each test starts from the browser's "zero state", 
   // all changes made to the browser's state by the previous tests are reset
   describe('when logged in', () => {
 
     beforeEach(async ({ page }) => {
-      await page.getByRole('button', { name: 'login' }).click()
-      await page.getByLabel('username').fill('mluukkai')
-      await page.getByLabel('password').fill('salainen')
-      await page.getByRole('button', { name: 'login' }).click()
+    //   await page.getByRole('button', { name: 'login' }).click()
+    //   await page.getByLabel('username').fill('mluukkai')
+    //   await page.getByLabel('password').fill('salainen')
+    //   await page.getByRole('button', { name: 'login' }).click()
+      await loginWith(page, 'mluukkai', 'salainen')
     })
 
     test('a new note can be created', async ({ page }) => {
