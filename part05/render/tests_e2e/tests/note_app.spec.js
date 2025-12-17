@@ -2,7 +2,17 @@ const { test, describe, expect, beforeEach } = require('@playwright/test')
 
 describe('Note app', () => {
 
-  beforeEach(async ({ page }) => {
+  beforeEach(async ({ page, request }) => {
+    await request.post('http://localhost:3001/api/testing/reset')
+    // add a new user to the backend:
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        name: 'Matti Luukkainen',
+        username: 'mluukkai',
+        password: 'salainen'
+      }
+    })
+    // access frontend page
     await page.goto('http://localhost:5173')
   })  
 
@@ -27,7 +37,7 @@ describe('Note app', () => {
     // but, this can be problematic to the extent that if the 
     // registration form is changed, the tests may break
 
-    await page.getByLabel('username').fill('mluukkai2')
+    await page.getByLabel('username').fill('mluukkai')
     await page.getByLabel('password').fill('salainen')
 
     await page.getByRole('button', { name: 'login' }).click()
