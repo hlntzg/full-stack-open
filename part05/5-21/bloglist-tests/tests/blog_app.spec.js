@@ -57,19 +57,20 @@ describe('Blog app', () => {
 
       test('a blog can be liked', async ({ page }) => {
         // Click 'view' to expand the blog details
-        const blogElement = page.getByText('first blog').locator('..')
+        const blog = page.locator('.blog').filter({ hasText: 'first blog' })
 
-        await blogElement.getByRole('button', { name: 'view' }).click()
-        await expect(blogElement.getByText('hide')).toBeVisible() // 'hide' button is visible after expanding the blog
-
-        const likeButton = blogElement.getByRole('button', { name: 'like' })
+        await blog.locator('button:visible', { hasText: 'view' }).click()
+        // Confirm details are shown
+        await expect(blog.locator('button', { hasText: 'hide' })).toBeVisible()
+        
+        const likeButton = blog.locator('button', { hasText: 'like' })
         await likeButton.click()
 
         // Verify likes increased
-        await expect(blogElement.getByText('1')).toBeVisible()
+        await expect(blog.getByText('1')).toBeVisible()
 
         await likeButton.click()
-        await expect(blogElement.getByText('2')).toBeVisible()
+        await expect(blog.getByText('2')).toBeVisible()
       })
     })
 
@@ -81,26 +82,29 @@ describe('Blog app', () => {
       })
 
       test('the creator can delete a blog', async ({ page }) => {
-        // Click 'view' to expand the blog details
-        const blogElement = page.getByText('first blog').locator('..')
+        const blog = page.locator('.blog').filter({ hasText: 'first blog' })
 
-        await blogElement.getByRole('button', { name: 'view' }).click()
+        await blog.locator('button', { hasText: 'view' }).first().click()
 
-        const removeButton = blogElement.getByRole('button', { name: 'remove' })
-        await removeButton.click()
-
-        // Handle the dialog that appears for confirmation when removing the blog
-        page.on('dialog', async dialog => {
+        // Register dialog handler BEFORE clicking remove
+        page.once('dialog', async dialog => {
           expect(dialog.type()).toBe('confirm')
           await dialog.accept()
         })
 
-        // Assert that the 'first blog' is no longer visible
-        await expect(page.getByText('first blog')).not.toBeVisible()
+        await blog.getByRole('button', { name: 'remove' }).click()
 
-        // Ensure other blogs still exist on the page
-        await expect(page.getByText('second blog')).toBeVisible()
-        await expect(page.getByText('third blog')).toBeVisible()
+        // Assert blog is removed from the DOM
+        await expect(blog).toHaveCount(0) // element fully removed whiie 
+
+        // Other blogs should still exist
+        await expect(
+          page.locator('.blog').filter({ hasText: 'second blog' })
+        ).toBeVisible()
+
+        await expect(
+          page.locator('.blog').filter({ hasText: 'third blog' })
+        ).toBeVisible()
       })
     })
   })
